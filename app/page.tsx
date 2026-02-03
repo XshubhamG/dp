@@ -10,7 +10,9 @@ import { Select } from '@/components/ui/select';
 const SAMPLE_NAME = 'Shubham Giri';
 
 export default function HomePage() {
+  const [nameInput, setNameInput] = React.useState(SAMPLE_NAME);
   const [name, setName] = React.useState(SAMPLE_NAME);
+  const [genderInput, setGenderInput] = React.useState<'boy' | 'girl'>('boy');
   const [gender, setGender] = React.useState<'boy' | 'girl'>('boy');
   const initials = React.useMemo(() => {
     const parts = name.trim().split(/\s+/);
@@ -50,11 +52,14 @@ export default function HomePage() {
           <div className="grid gap-4">
             <label className="space-y-2 text-sm font-medium">
               Full name
-              <Input value={name} onChange={(event) => setName(event.target.value)} />
+              <Input value={nameInput} onChange={(event) => setNameInput(event.target.value)} />
             </label>
             <label className="space-y-2 text-sm font-medium">
               Gender palette
-              <Select value={gender} onChange={(event) => setGender(event.target.value as 'boy' | 'girl')}>
+              <Select
+                value={genderInput}
+                onChange={(event) => setGenderInput(event.target.value as 'boy' | 'girl')}
+              >
                 <option value="boy">Boy</option>
                 <option value="girl">Girl</option>
               </Select>
@@ -63,13 +68,23 @@ export default function HomePage() {
 
           <div className="flex flex-wrap gap-3">
             <Button
+              onClick={() => {
+                setName(nameInput.trim() || SAMPLE_NAME);
+                setGender(genderInput);
+              }}
+            >
+              <UserCircle2 size={16} />
+              Generate avatar
+            </Button>
+            <Button
+              variant="secondary"
               onClick={() => navigator.clipboard.writeText(window.location.origin + avatarUrl)}
             >
               <ShieldCheck size={16} />
               Copy API URL
             </Button>
             <Button
-              variant="secondary"
+              variant="ghost"
               onClick={() => window.open(avatarUrl, '_blank', 'noopener,noreferrer')}
             >
               <ImageIcon size={16} />
