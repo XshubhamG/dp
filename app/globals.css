@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+  --background: #f8f5f2;
+  --surface: #fff9f5;
+  --foreground: #2c2a33;
+  --muted: #f1e9e4;
+  --muted-foreground: #6c6572;
+  --border: #eadfd8;
+  --ring: #d8b4c0;
+  --primary: #f2b8d1;
+  --primary-foreground: #3b1d2c;
+  --accent: #cfe6f7;
+  --accent-foreground: #0d2b3a;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #1b1a1f;
+  --surface: #232229;
+  --foreground: #f4edf1;
+  --muted: #2f2b36;
+  --muted-foreground: #b5aeb8;
+  --border: #3a3442;
+  --ring: #d8b4c0;
+  --primary: #b7a1f2;
+  --primary-foreground: #18151f;
+  --accent: #8ccad7;
+  --accent-foreground: #091f26;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+* {
+  border-color: var(--border);
+}
+
+.hero-grid {
+  background-color: var(--muted);
+}
