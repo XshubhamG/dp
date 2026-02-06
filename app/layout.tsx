@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Pastel Profile Studio',
-  description: 'Generate pastel profile avatars with initials and gender-aware palettes.'
+  description: 'Generate pastel profile avatars with initials and custom background colors.'
 };
 
 export default function RootLayout({

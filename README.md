@@ -3,12 +3,12 @@
 Create pastel, initials-based profile avatars with a gentle light/dark interface and a simple SVG API.
 
 ## Overview
-Pastel Profile Studio is a Next.js + Tailwind CSS (v4) web app that generates personalized profile images from a name. It supports light/dark mode, pastel (no-gradient) color palettes, and gender-aware color selection for boy/girl.
+Pastel Profile Studio is a Next.js + Tailwind CSS (v4) web app that generates personalized profile images from a name. It supports light/dark mode, pastel (no-gradient) color palettes, and custom background colors.
 
 ## Features
 - **Pastel UI** with light and dark themes
 - **Initials-based avatars** generated from full names (e.g., "Shubham Giri" → **SG**)
-- **Gender-aware palettes** (`boy` | `girl`)
+- **Custom background colors** via hex input
 - **Instant SVG API** for download or inline use
 - **Shadcn-inspired UI** with icon-based controls
 
@@ -28,19 +28,19 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 ## API Usage
 ### Endpoint
 ```
-GET /api/avatar?name=Shubham%20Giri&gender=boy
+GET /api/avatar?name=Shubham%20Giri&background=%23B6E3F9
 ```
 
 ### Query Parameters
 | parameter | description | example |
 | --- | --- | --- |
 | `name` | Full name used to compute initials | `Shubham Giri` |
-| `gender` | Palette choice (`boy` or `girl`) | `girl` |
+| `background` | Hex background color | `#B6E3F9` |
 | `download` | Adds `Content-Disposition: attachment` | `1` |
 
 ### Example
 ```bash
-curl "http://localhost:3000/api/avatar?name=Shubham%20Giri&gender=boy"
+curl "http://localhost:3000/api/avatar?name=Shubham%20Giri&background=%23B6E3F9"
 ```
 
 ## Project Structure
@@ -62,7 +62,7 @@ lib/utils.ts              # Utility helper
 - `npm run lint` — Run lint checks
 
 ## Notes
-- The SVG avatar is deterministic for a given name and gender.
+- The SVG avatar is deterministic for a given name when no background color is provided.
 - The API returns a 256×256 rounded-square avatar.
 
 ## License

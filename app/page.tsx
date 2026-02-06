@@ -5,22 +5,28 @@ import * as React from 'react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select } from '@/components/ui/select';
 
 const SAMPLE_NAME = 'Shubham Giri';
+const DEFAULT_BACKGROUND = '#B6E3F9';
 
 export default function HomePage() {
   const [nameInput, setNameInput] = React.useState(SAMPLE_NAME);
   const [name, setName] = React.useState(SAMPLE_NAME);
-  const [genderInput, setGenderInput] = React.useState<'boy' | 'girl'>('boy');
-  const [gender, setGender] = React.useState<'boy' | 'girl'>('boy');
+  const [backgroundInput, setBackgroundInput] = React.useState(DEFAULT_BACKGROUND);
+  const [background, setBackground] = React.useState(DEFAULT_BACKGROUND);
   const initials = React.useMemo(() => {
     const parts = name.trim().split(/\s+/);
     const letters = parts.slice(0, 2).map((part) => part[0]?.toUpperCase());
     return letters.join('') || 'SG';
   }, [name]);
 
-  const avatarUrl = `/api/avatar?name=${encodeURIComponent(name)}&gender=${gender}`;
+  const avatarUrl = React.useMemo(() => {
+    const params = new URLSearchParams({ name });
+    if (background) {
+      params.set('background', background);
+    }
+    return `/api/avatar?${params.toString()}`;
+  }, [background, name]);
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
@@ -39,13 +45,13 @@ export default function HomePage() {
         <ThemeToggle />
       </header>
 
-      <main className="mx-auto grid max-w-6xl gap-10 px-6 pb-16 md:grid-cols-[1.1fr_0.9fr] md:px-12">
+      <main className="mx-auto grid min-h-screen max-w-6xl place-content-center gap-10 px-6 pb-16 md:grid-cols-[1.1fr_0.9fr] md:px-12">
         <section className="space-y-6 rounded-[32px] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm">
           <div className="space-y-2">
             <p className="text-sm font-medium text-[var(--muted-foreground)]">Profile initials API</p>
             <h2 className="text-3xl font-semibold">Generate avatars on demand</h2>
             <p className="text-sm text-[var(--muted-foreground)]">
-              Serve a personalized SVG avatar based on the name and a gender-aware pastel palette.
+              Serve a personalized SVG avatar based on the name and your chosen background color.
             </p>
           </div>
 
@@ -55,14 +61,20 @@ export default function HomePage() {
               <Input value={nameInput} onChange={(event) => setNameInput(event.target.value)} />
             </label>
             <label className="space-y-2 text-sm font-medium">
-              Gender palette
-              <Select
-                value={genderInput}
-                onChange={(event) => setGenderInput(event.target.value as 'boy' | 'girl')}
-              >
-                <option value="boy">Boy</option>
-                <option value="girl">Girl</option>
-              </Select>
+              Background color
+              <div className="flex gap-3">
+                <Input
+                  type="color"
+                  value={backgroundInput}
+                  onChange={(event) => setBackgroundInput(event.target.value)}
+                  className="h-11 w-16 p-1"
+                />
+                <Input
+                  value={backgroundInput}
+                  onChange={(event) => setBackgroundInput(event.target.value)}
+                  placeholder="#B6E3F9"
+                />
+              </div>
             </label>
           </div>
 
@@ -70,7 +82,7 @@ export default function HomePage() {
             <Button
               onClick={() => {
                 setName(nameInput.trim() || SAMPLE_NAME);
-                setGender(genderInput);
+                setBackground(backgroundInput.trim() || DEFAULT_BACKGROUND);
               }}
             >
               <UserCircle2 size={16} />
@@ -102,7 +114,7 @@ export default function HomePage() {
           <div className="rounded-3xl border border-dashed border-[var(--border)] bg-[var(--muted)] p-4 text-sm text-[var(--muted-foreground)]">
             <p className="font-medium text-[var(--foreground)]">Example request</p>
             <code className="mt-2 block break-all rounded-2xl bg-[var(--surface)] p-3 text-xs text-[var(--foreground)]">
-              {`/api/avatar?name=${encodeURIComponent(name)}&gender=${gender}`}
+              {avatarUrl}
             </code>
           </div>
         </section>
@@ -139,7 +151,7 @@ export default function HomePage() {
               <li className="flex items-start gap-2">
                 <span className="mt-1 h-2 w-2 rounded-full bg-[var(--accent)]" />
                 <span>
-                  <strong>gender</strong>: boy | girl (defaults to boy).
+                  <strong>background</strong>: Hex color (ex: #B6E3F9).
                 </span>
               </li>
             </ul>
